@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ChangeEvent, useState } from "react";
+
+import { v4 as uuidv4 } from "uuid";
+import { CreateNewTodo } from "./components/CreateNewTodo";
+import { TodoList } from "./components/TodoList";
+
+export type TodoType = { id: string; name: string };
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todoList, setTodoList] = useState<TodoType[]>([
+    { id: "1", name: "Item #1" },
+    { id: "2", name: "Item #2" },
+    { id: "3", name: "Item #3" },
+    { id: "4", name: "Item #4" },
+  ]);
+
+  const [newTodoString, setNewTodoString] = useState("");
+
+  const onNewTodoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewTodoString(e.target.value);
+  };
+
+  const handleClickAddTodo = () => {
+    const newTodoItem: TodoType = {
+      id: uuidv4(),
+      name: newTodoString,
+    };
+    setTodoList([...todoList, newTodoItem]);
+    setNewTodoString("");
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p>This is to do app</p>
+      <CreateNewTodo
+        newTodoString={newTodoString}
+        onNewTodoChange={onNewTodoChange}
+        handleClickAddTodo={handleClickAddTodo}
+      />
+      <TodoList todoList={todoList} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
