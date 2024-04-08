@@ -5,6 +5,7 @@ type Props = {
   newTodoString: string;
   onNewTodoChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleClickAddTodo: () => void;
+  updateCompleted: (todoId: string) => void;
 };
 
 export const CreateNewTodo = ({
@@ -14,7 +15,6 @@ export const CreateNewTodo = ({
 }: Props) => {
   return (
     <div>
-      {" "}
       <TextField
         size="small"
         value={newTodoString}
